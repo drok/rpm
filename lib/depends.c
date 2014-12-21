@@ -291,10 +291,6 @@ addheader:
 	if ((Name = rpmdsN(obsoletes)) == NULL)
 	    continue;	/* XXX can't happen */
 
-	/* XXX avoid self-obsoleting packages. */
-	if (rstreq(rpmteN(p), Name))
-	    continue;
-
 	if (Name[0] == '/')
 	    mi = rpmtsInitIterator(ts, RPMTAG_BASENAMES, Name, 0);
 	else
@@ -304,12 +300,15 @@ addheader:
 	    ts->removedPackages, ts->numRemovedPackages, 1);
 
 	while((oh = rpmdbNextIterator(mi)) != NULL) {
-	    /* Ignore colored packages not in our rainbow. */
-	    ohcolor = headerGetNumber(oh, RPMTAG_HEADERCOLOR);
-	    /* XXX provides *are* colored, effectively limiting Obsoletes:
-		to matching only colored Provides: based on pkg coloring. */
-	    if (tscolor && hcolor && ohcolor && !(hcolor & ohcolor))
+	    const char *oarch = headerGetString(oh, RPMTAG_ARCH);
+
+	    /* avoid self-obsoleting packages */
+	    if (rstreq(rpmteN(p), Name) && rstreq(rpmteA(p), oarch)) {
+		char * ohNEVRA = headerGetAsString(oh, RPMTAG_NEVRA);
+		rpmlog(RPMLOG_DEBUG, "  Not obsoleting: %s\n", ohNEVRA);
+		free(ohNEVRA);
 		continue;
+	    }
 
 	    /*
 	     * Rpm prior to 3.0.3 does not have versioned obsoletes.
