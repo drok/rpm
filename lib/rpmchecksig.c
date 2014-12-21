@@ -333,6 +333,11 @@ static int rpmReSign(rpmts ts, QVA_t qva, ARGV_const_t argv)
 		       rpm);
 		    /* Identical signature is not an error */
 		    res = 0;
+
+                    /* Clean up intermediate target */
+                    xx = unlink(sigtarget);
+                    sigtarget = _free(sigtarget);
+                    continue;
 		}
 		goto exit;
 	    }
