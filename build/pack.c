@@ -333,6 +333,41 @@ rpmRC readRPM(const char *fileName, rpmSpec *specp,
     return RPMRC_OK;
 }
 
+static int depContainsTilde(Header h, rpmTag tagEVR)
+{
+    struct rpmtd_s evrs;
+    const char *evr = NULL;
+
+    if (headerGet(h, tagEVR, &evrs, HEADERGET_MINMEM)) {
+	while ((evr = rpmtdNextString(&evrs)) != NULL)
+	    if (strchr(evr, '~'))
+		break;
+	rpmtdFreeData(&evrs);
+    }
+    return evr != NULL;
+}
+
+static rpmTag depevrtags[] = {
+    RPMTAG_PROVIDEVERSION,
+    RPMTAG_REQUIREVERSION,
+    RPMTAG_OBSOLETEVERSION,
+    RPMTAG_CONFLICTVERSION,
+    RPMTAG_TRIGGERVERSION,
+    RPMTAG_SUGGESTSVERSION,
+    RPMTAG_ENHANCESVERSION,
+    0
+};
+
+static int haveTildeDep(Header h)
+{
+    int i;
+
+    for (i = 0; depevrtags[i] != 0; i++)
+	if (depContainsTilde(h, depevrtags[i]))
+	    return 1;
+    return 0;
+}
+
 rpmRC writeRPM(Header *hdrp, unsigned char ** pkgidp, const char *fileName,
 	     CSA_t csa, char *passPhrase, char **cookie)
 {
@@ -404,6 +439,10 @@ rpmRC writeRPM(Header *hdrp, unsigned char ** pkgidp, const char *fileName,
 	headerPutString(h, RPMTAG_PAYLOADFLAGS, buf+1);
 	free(buf);
     }
+
+    /* check if the package has a dependency with a '~' */
+    if (haveTildeDep(h))
+	(void) rpmlibNeedsFeature(h, "TildeInVersions", "4.10.0-1");
 
     /* Create and add the cookie */
     if (cookie) {

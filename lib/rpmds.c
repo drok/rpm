@@ -962,6 +962,9 @@ static const struct rpmlibProvides_s rpmlibProvides[] = {
 	(		 RPMSENSE_EQUAL),
     N_("support for POSIX.1e file capabilities") },
 #endif
+    { "rpmlib(TildeInVersions)",    "4.10.0-1",
+	(		RPMSENSE_EQUAL),
+    N_("dependency comparison supports versions with tilde.") },
     { NULL,				NULL, 0,	NULL }
 };
 
