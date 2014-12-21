@@ -213,6 +213,8 @@ static void addQ(rpmte p,
 		rpm_color_t prefcolor)
 {
     rpmte q, qprev;
+    rpm_color_t pcolor = rpmteColor(p);
+    int tailcond;
 
     /* Mark the package as queued. */
     rpmteTSI(p)->tsi_reqx = 1;
@@ -223,13 +225,18 @@ static void addQ(rpmte p,
 	return;
     }
 
-    /* Find location in queue using metric tsi_qcnt. */
+    if (rpmteType(p) == TR_ADDED)
+	tailcond = (pcolor && pcolor != prefcolor);
+    else
+	tailcond = (pcolor && pcolor == prefcolor);
+
+    /* Find location in queue using metric tsi_qcnt and color. */
     for (qprev = NULL, q = (*qp);
 	 q != NULL;
 	 qprev = q, q = rpmteTSI(q)->tsi_suc)
     {
-	/* XXX Insure preferred color first. */
-	if (rpmteColor(p) != prefcolor && rpmteColor(p) != rpmteColor(q))
+	/* Place preferred color towards queue head on install, tail on erase */
+	if (tailcond && (pcolor != rpmteColor(q)))
 	    continue;
 
 	if (rpmteTSI(q)->tsi_qcnt <= rpmteTSI(p)->tsi_qcnt)
