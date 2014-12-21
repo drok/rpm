@@ -1451,6 +1451,8 @@ int rpmtsRun(rpmts ts, rpmps okProbs, rpmprobFilterFlags ignoreSet)
 {
     int rc = -1; /* assume failure */
     void * lock = NULL;
+    /* Force default 022 umask during transaction for consistent results */
+    mode_t oldmask = umask(022);
 
     /* XXX programmer error segfault avoidance. */
     if (rpmtsNElements(ts) <= 0) {
@@ -1507,6 +1509,7 @@ int rpmtsRun(rpmts ts, rpmps okProbs, rpmprobFilterFlags ignoreSet)
     (void) rpmtsFinish(ts);
 
 exit:
+    (void) umask(oldmask);
     rpmtsFreeLock(lock);
     return rc;
 }

@@ -458,6 +458,7 @@ static rpmRC runLuaScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t argv,
     int xx;
     rpmlua lua = NULL; /* Global state. */
     rpmluav var;
+    mode_t oldmask;
 
     rasprintf(&sname, "%s(%s)", tag2sln(stag), rpmteNEVRA(psm->te));
 
@@ -496,11 +497,16 @@ static rpmRC runLuaScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t argv,
     var = rpmluavFree(var);
     rpmluaPop(lua);
 
+    /* Lua scripts can change our umask, save and restore */
+    oldmask = umask(0);
+    umask(oldmask);
+
     if (rpmluaRunScript(lua, script, sname) == 0) {
 	rc = RPMRC_OK;
     } else if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT)) {
 	warn_only = 1;
     }
+    umask(oldmask);
 
     rpmluaDelVar(lua, "arg");
 
