@@ -43,9 +43,9 @@ DIST_COMMON = README $(am__configure_deps) $(dist_bin_SCRIPTS) \
 	$(pkginclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/configure $(top_srcdir)/preinstall.am \
-	$(top_srcdir)/rpm.am ABOUT-NLS COPYING INSTALL config.guess \
-	config.rpath config.sub depcomp install-sh ltmain.sh missing \
-	mkinstalldirs
+	$(top_srcdir)/rpm.am ABOUT-NLS COPYING ChangeLog INSTALL \
+	config.guess config.rpath config.sub depcomp install-sh \
+	ltmain.sh missing mkinstalldirs
 @WITH_INTERNAL_DB_TRUE@am__append_1 = db3
 @WITH_LUAEXT_TRUE@am__append_2 = luaext
 rpmbin_PROGRAMS = rpm$(EXEEXT)
@@ -276,6 +276,8 @@ MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
 NM = @NM@
 NMEDIT = @NMEDIT@
+NSS_CFLAGS = @NSS_CFLAGS@
+NSS_LIBS = @NSS_LIBS@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OTOOL = @OTOOL@
@@ -287,6 +289,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 POSUB = @POSUB@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
@@ -1298,7 +1301,7 @@ distcheck: dist
 	*.zip*) \
 	  unzip $(distdir).zip ;;\
 	esac
-	chmod -R a-w $(distdir); chmod a+w $(distdir)
+	chmod -R a-w $(distdir); chmod u+w $(distdir)
 	mkdir $(distdir)/_build
 	mkdir $(distdir)/_inst
 	chmod a-w $(distdir)
