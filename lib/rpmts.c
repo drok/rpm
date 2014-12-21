@@ -429,13 +429,17 @@ rpmRC rpmtsImportPubkey(const rpmts ts, const unsigned char * pkt, size_t pktlen
 {
     Header h = headerNew();
     rpmRC rc = RPMRC_FAIL;		/* assume failure */
+    int xx;
     rpmPubkey pubkey = NULL;
     rpmKeyring keyring = rpmtsGetKeyring(ts, 1);
 
     if ((pubkey = rpmPubkeyNew(pkt, pktlen)) == NULL)
 	goto exit;
-    if (rpmKeyringAddKey(keyring, pubkey) != 0)
+    if (xx = rpmKeyringAddKey(keyring, pubkey) != 0) {
+        if (xx == 1) /* key already imported */
+            rc = RPMRC_OK;
 	goto exit;
+    }
     if (makePubkeyHeader(ts, pubkey, h) != 0) 
 	goto exit;
 
