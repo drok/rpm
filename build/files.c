@@ -1040,10 +1040,11 @@ static int checkHardLinks(FileList fl)
     return 0;
 }
 
-static int seenHardLink(FileList fl, FileListRec flp)
+static int seenHardLink(FileList fl, FileListRec flp, rpm_ino_t *fileid)
 {
     for (FileListRec ilp = fl->fileList; ilp < flp; ilp++) {
 	if (isHardLink(flp, ilp)) {
+	    *fileid = ilp - fl->fileList;
 	    return 1;
 	}
     }
@@ -1101,6 +1102,8 @@ static void genCpioListAndHeader(FileList fl,
     }
 
     for (i = 0, flp = fl->fileList; i < fl->fileListRecsUsed; i++, flp++) {
+	rpm_ino_t fileid = flp - fl->fileList;
+
  	/* Merge duplicate entries. */
 	while (i < (fl->fileListRecsUsed - 1) &&
 	    rstreq(flp->cpioPath, flp[1].cpioPath)) {
@@ -1186,7 +1189,7 @@ static void genCpioListAndHeader(FileList fl,
 	}
 	/* Excludes and dupes have been filtered out by now. */
 	if (S_ISREG(flp->fl_mode)) {
-	    if (flp->fl_nlink == 1 || !seenHardLink(fl, flp)) {
+	    if (flp->fl_nlink == 1 || !seenHardLink(fl, flp, &fileid)) {
 		totalFileSize += flp->fl_size;
 	    }
 	}
@@ -1208,12 +1211,18 @@ static void genCpioListAndHeader(FileList fl,
 	    headerPutUint16(h, RPMTAG_FILERDEVS, &rrdev, 1);
 	}
 	
-	{   rpm_dev_t rdev = (rpm_dev_t) flp->fl_dev;
-	    headerPutUint32(h, RPMTAG_FILEDEVICES, &rdev, 1);
-	}
-
-	{   rpm_ino_t rino = (rpm_ino_t) flp->fl_ino;
+	/*
+	 * To allow rpmbuild to work on filesystems with 64bit inodes numbers,
+	 * remap them into 32bit integers based on filelist index, just
+	 * preserving semantics for determining hardlinks.
+	 * Start at 1 as inode zero as that could be considered as an error.
+	 * Since we flatten all the inodes to appear within a single fs,
+	 * we also need to flatten the devices.
+	 */
+	{   rpm_ino_t rino = fileid + 1;
+	    rpm_dev_t rdev = flp->fl_dev ? 1 : 0;
 	    headerPutUint32(h, RPMTAG_FILEINODES, &rino, 1);
+	    headerPutUint32(h, RPMTAG_FILEDEVICES, &rdev, 1);
 	}
 	
 	headerPutString(h, RPMTAG_FILELANGS, flp->langs);
