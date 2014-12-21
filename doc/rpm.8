@@ -836,17 +836,22 @@ Use \fB--initdb\fR to create a new database if one doesn't already exist
 (existing database is not overwritten), use
 \fB--rebuilddb\fR to rebuild the database indices from
 the installed package headers.
-.SS "SHOWRC"
+.SS "MISCELLANEOUS COMMANDS"
 .PP
-The command
-.PP
+.TP
 \fBrpm\fR \fB--showrc\fR
-.PP
 shows the values \fBrpm\fR will use for all of the
 options are currently set in
 \fIrpmrc\fR and
 \fImacros\fR
 configuration file(s).
+.TP
+\fBrpm\fR \fB--setperms\fR \fIPACKAGE_NAME\fR
+sets permissions of files in the given package.
+.TP
+\fBrpm\fR \fB--setugids\fR \fIPACKAGE_NAME\fR
+sets user/group ownership of files in the given package.
+
 .SS "FTP/HTTP OPTIONS"
 .PP
 \fBrpm\fR can act as an FTP and/or HTTP client so
