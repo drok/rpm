@@ -1170,6 +1170,11 @@ assert(s != NULL);
 	free(buf);
     }
 
+    /* Add possible GStreamer provides */
+    if (!fc->skipProv && isDSO) {
+	xx = rpmfcHelper(fc, 'P', "gstreamer");
+    }
+
 exit:
     soname = _free(soname);
     if (elf) (void) elf_end(elf);
