@@ -718,6 +718,7 @@ static const char * rpmSigString(rpmRC res)
     case RPMRC_FAIL:		str = "BAD";		break;
     case RPMRC_NOKEY:		str = "NOKEY";		break;
     case RPMRC_NOTTRUSTED:	str = "NOTRUSTED";	break;
+    case RPMRC_UNSIGNED:	str = "UNSIGNED";	break;
     default:
     case RPMRC_NOTFOUND:	str = "UNKNOWN";	break;
     }
@@ -750,7 +751,7 @@ verifyMD5Digest(rpmtd sigtd, DIGEST_CTX md5ctx, char **msg)
 	free(hex);
     } else {
 	res = RPMRC_OK;
-	rasprintf(msg, "%s %s (%s)\n", title, rpmSigString(res), md5);
+	rasprintf(msg, "%s %s (%s) %s\n", title, rpmSigString(res), md5, rpmSigString(RPMRC_UNSIGNED));
     }
     free(md5);
 
@@ -787,7 +788,7 @@ verifySHA1Digest(rpmtd sigtd, DIGEST_CTX sha1ctx, char **msg)
 		  rpmSigString(res), sig, SHA1 ? SHA1 : "(nil)");
     } else {
 	res = RPMRC_OK;
-	rasprintf(msg, "%s %s (%s)\n", title, rpmSigString(res), SHA1);
+	rasprintf(msg, "%s %s (%s) %s\n", title, rpmSigString(res), SHA1, rpmSigString(RPMRC_UNSIGNED));
     }
 
 exit:
@@ -831,6 +832,7 @@ exit:
     return res;
 }
 
+// this verifies signatures _AND_ digests. the OK result is ambiguous
 rpmRC
 rpmVerifySignature(rpmKeyring keyring, rpmtd sigtd, pgpDig dig, DIGEST_CTX ctx, char ** result)
 {
@@ -845,9 +847,11 @@ rpmVerifySignature(rpmKeyring keyring, rpmtd sigtd, pgpDig dig, DIGEST_CTX ctx, 
     switch (sigtd->tag) {
     case RPMSIGTAG_MD5:
 	res = verifyMD5Digest(sigtd, ctx, &msg);
+	if (res == RPMRC_OK) res = RPMRC_UNSIGNED;
 	break;
     case RPMSIGTAG_SHA1:
 	res = verifySHA1Digest(sigtd, ctx, &msg);
+	if (res == RPMRC_OK) res = RPMRC_UNSIGNED;
 	break;
     case RPMSIGTAG_RSA:
     case RPMSIGTAG_DSA:

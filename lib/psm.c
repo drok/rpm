@@ -245,6 +245,7 @@ rpmRC rpmInstallSourcePackage(rpmts ts, FD_t fd,
     switch (rpmrc) {
     case RPMRC_NOTTRUSTED:
     case RPMRC_NOKEY:
+    case RPMRC_UNSIGNED:
     case RPMRC_OK:
 	break;
     default:

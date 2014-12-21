@@ -94,8 +94,9 @@ typedef enum rpmVSFlags_e {
     RPMVSF_NOSHA1	= (1 << 16),	/* unimplemented */
     RPMVSF_NOMD5	= (1 << 17),
     RPMVSF_NODSA	= (1 << 18),
-    RPMVSF_NORSA	= (1 << 19)
+    RPMVSF_NORSA	= (1 << 19),
     /* bit(s) 16-31 unused */
+    RPMVSF_SUPPRESSSECURITYMSG	= (1 << 31), /* Avoid repeating NOKEY/UNSIGNED/NOTTRUSTED messages. They still go to RPMLOG_DEBUG */
 } rpmVSFlags;
 
 #define	_RPMVSF_NODIGESTS	\

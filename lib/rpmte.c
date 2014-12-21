@@ -788,6 +788,7 @@ static Header rpmteFDHeader(rpmts ts, rpmte te)
 	    break;
 	case RPMRC_NOTTRUSTED:
 	case RPMRC_NOKEY:
+	case RPMRC_UNSIGNED:
 	case RPMRC_OK:
 	    break;
 	}

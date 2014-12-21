@@ -26,6 +26,7 @@ AT_CHECK([
 rm -rf ${TOPDIR}
 
 run rpm \
+  --nosignature \
   -U "${abs_srcdir}"/data/SRPMS/hello-1.0-1.src.rpm
 ],
 [0],
@@ -41,6 +42,7 @@ AT_CHECK([
 rm -rf ${TOPDIR}
 
 run rpm \
+  --nosignature \
   -i "${abs_srcdir}"/data/SRPMS/hello-1.0-1.src.rpm
 ],
 [0],

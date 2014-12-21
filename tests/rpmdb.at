@@ -58,7 +58,9 @@ RPMDB_INIT
 tpkg="foo-1.0-1.noarch.rpm"
 cp "${RPMDATA}/RPMS/${tpkg}" "${RPMTEST}"
 
-runroot rpm -i \
+runroot rpm \
+  --nosignature \
+  -i \
   "${tpkg}"
 ],
 [0])
@@ -80,6 +82,7 @@ tpkg="hello-1.0-1.i386.rpm"
 cp "${RPMDATA}/RPMS/${tpkg}" "${RPMTEST}"
 
 runroot rpm -i \
+  --nosignature \
   --noscripts --nodeps --ignorearch --relocate=/usr="${abs_builddir}"/testing/check \
   "${tpkg}"
 ],
@@ -102,6 +105,7 @@ tpkg="hello-1.0-1.ppc64.rpm"
 cp "${RPMDATA}/RPMS/${tpkg}" "${RPMTEST}"
 
 runroot rpm -i \
+  --nosignature \
   --noscripts --nodeps --ignorearch --relocate=/usr="${abs_builddir}"/testing/check \
   "${tpkg}"
 ],
@@ -144,7 +148,7 @@ rm -rf "${TOPDIR}"
 run rpmbuild --quiet -bb \
           ${RPMDATA}/SPECS/flangtest.spec
 
-runroot rpm -U --define "_install_langs de:fi" "${TOPDIR}"/RPMS/noarch/flangtest-1.0-1.noarch.rpm
+runroot rpm -U --nosignature --define "_install_langs de:fi" "${TOPDIR}"/RPMS/noarch/flangtest-1.0-1.noarch.rpm
 runroot rpm -qls flangtest
 ],
 [0],
@@ -171,7 +175,7 @@ run rpmbuild --quiet -bb \
 	--define "filedata same_stuff" \
           ${RPMDATA}/SPECS/conflicttest.spec
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
 test -f "${RPMTEST}"/usr/share/my.version
 ],
 [0],
@@ -193,7 +197,7 @@ run rpmbuild --quiet -bb \
 	--define "filedata same_stuff" \
           ${RPMDATA}/SPECS/conflicttest.spec
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
 runroot rpm -e conflictstatus
 test -f "${RPMTEST}"/usr/share/my.version
 ],
