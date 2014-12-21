@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rpm\n"
 "Report-Msgid-Bugs-To: rpm-maint@lists.rpm.org\n"
-"POT-Creation-Date: 2009-12-07 12:45+0200\n"
+"POT-Creation-Date: 2010-01-08 10:36+0200\n"
 "PO-Revision-Date: 2009-02-03 15:37-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
@@ -1488,88 +1488,88 @@ msgid "override target platform"
 msgstr "substituir plataforma de destino"
 
 # , c-format
-#: build/rpmfc.c:102
+#: build/rpmfc.c:104
 #, c-format
 msgid "Couldn't create pipe for %s: %m\n"
 msgstr "Não foi possível criar um pipe para %s: %m\n"
 
 # , c-format
-#: build/rpmfc.c:117
+#: build/rpmfc.c:119
 #, c-format
 msgid "Couldn't chdir to %s: %s\n"
 msgstr "Não foi possível realizar o chdir para %s: %s\n"
 
 # , c-format
-#: build/rpmfc.c:128
+#: build/rpmfc.c:130
 #, c-format
 msgid "Couldn't exec %s: %s\n"
 msgstr "Não foi possível executar %s: %s\n"
 
 # , c-format
-#: build/rpmfc.c:133 lib/psm.c:742
+#: build/rpmfc.c:135 lib/psm.c:742
 #, c-format
 msgid "Couldn't fork %s: %s\n"
 msgstr "Não foi possível bifurcar %s: %s\n"
 
-#: build/rpmfc.c:219
+#: build/rpmfc.c:221
 #, c-format
 msgid "%s failed\n"
 msgstr "%s falhou\n"
 
 # , c-format
-#: build/rpmfc.c:223
+#: build/rpmfc.c:225
 #, c-format
 msgid "failed to write all data to %s\n"
 msgstr "falha ao gravar todos os dados em %s\n"
 
-#: build/rpmfc.c:1173
+#: build/rpmfc.c:1175
 #, c-format
 msgid "Conversion of %s to long integer failed.\n"
 msgstr "A conversão de %s para inteiro longo falhou.\n"
 
-#: build/rpmfc.c:1253
+#: build/rpmfc.c:1255
 #, c-format
 msgid "magic_open(0x%x) failed: %s\n"
 msgstr "magic_open(0x%x) falhou: %s\n"
 
-#: build/rpmfc.c:1260
+#: build/rpmfc.c:1262
 #, c-format
 msgid "magic_load failed: %s\n"
 msgstr "magic_load falhou: %s\n"
 
-#: build/rpmfc.c:1302
+#: build/rpmfc.c:1304
 #, c-format
 msgid "Recognition of file \"%s\" failed: mode %06o %s\n"
 msgstr "Falha no reconhecimento do arquivo \"%s\": modo %06o %s\n"
 
 # , c-format
-#: build/rpmfc.c:1500
+#: build/rpmfc.c:1502
 #, c-format
 msgid "Finding  %s: %s\n"
 msgstr "Localizando %s: %s\n"
 
 # , c-format
-#: build/rpmfc.c:1505 build/rpmfc.c:1514
+#: build/rpmfc.c:1507 build/rpmfc.c:1516
 #, c-format
 msgid "Failed to find %s:\n"
 msgstr "Falha ao localizar %s:\n"
 
 # , c-format
-#: build/rpmfc.c:1596 build/rpmfc.c:1627
+#: build/rpmfc.c:1598 build/rpmfc.c:1629
 msgid "Unable to get current dependency name.\n"
 msgstr "Não foi possível obter o nome da dependência atual.\n"
 
-#: build/rpmfc.c:1602 build/rpmfc.c:1633
+#: build/rpmfc.c:1604 build/rpmfc.c:1635
 msgid "Unable to get current dependency epoch-version-release.\n"
 msgstr "Não foi possível obter a dependência epoch-version-release atual.\n"
 
-#: build/rpmfc.c:1660
+#: build/rpmfc.c:1662
 msgid "File count from file info doesn't match file in container.\n"
 msgstr ""
 "O contador de arquivos das informações do mesmo não correspondem ao do "
 "arquivo no container.\n"
 
-#: build/rpmfc.c:1675
+#: build/rpmfc.c:1677
 msgid "Container not of string array data type.\n"
 msgstr "O container não é do tipo de dados vetor de string.\n"
 
@@ -2546,7 +2546,7 @@ msgid "%s failed: %s\n"
 msgstr "%s falhou: %s\n"
 
 # , c-format
-#: lib/psm.c:1537 lib/transaction.c:1087 lib/verify.c:479
+#: lib/psm.c:1537 lib/transaction.c:1291 lib/verify.c:479
 #, c-format
 msgid "Unable to change root directory: %m\n"
 msgstr "Não foi possível alterar o diretório raiz: %m\n"
@@ -3095,28 +3095,28 @@ msgid "Unknown format"
 msgstr "Formato desconhecido"
 
 # , c-format
-#: lib/rpmts.c:105
+#: lib/rpmts.c:86
 #, c-format
 msgid "cannot open Packages database in %s\n"
 msgstr "não foi possível abrir o banco de dados de pacotes em %s\n"
 
-#: lib/rpmts.c:190
+#: lib/rpmts.c:171
 #, c-format
 msgid "extra '(' in package label: %s\n"
 msgstr "\"(\" extra no rótulo do pacote: %s\n"
 
-#: lib/rpmts.c:208
+#: lib/rpmts.c:189
 #, c-format
 msgid "missing '(' in package label: %s\n"
 msgstr "\"(\" faltando no rótulo do pacote: %s\n"
 
-#: lib/rpmts.c:216
+#: lib/rpmts.c:197
 #, c-format
 msgid "missing ')' in package label: %s\n"
 msgstr "\")\" faltando no rótulo do pacote: %s\n"
 
 # , c-format
-#: lib/rpmts.c:287
+#: lib/rpmts.c:268
 #, c-format
 msgid "%s: reading of public key failed.\n"
 msgstr "%s: falha na leitura da chave pública.\n"
@@ -3532,7 +3532,7 @@ msgstr "Não foi possível determinar o \"endianess\" do BD.\n"
 msgid "Unknown system error"
 msgstr "Erro de sistema desconhecido"
 
-#: python/rpmts-py.c:164
+#: python/rpmts-py.c:165
 #, c-format
 msgid "error: python callback %s failed, aborting!\n"
 msgstr "erro: retorno de chamada %s do python falhou, interrompendo!\n"

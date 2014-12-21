@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rpm 4.4.2\n"
 "Report-Msgid-Bugs-To: rpm-maint@lists.rpm.org\n"
-"POT-Creation-Date: 2009-12-07 12:45+0200\n"
+"POT-Creation-Date: 2010-01-08 10:36+0200\n"
 "PO-Revision-Date: 2007-05-05 10:52+0800\n"
 "Last-Translator: Wei-Lun Chao <chaoweilun@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -1355,80 +1355,80 @@ msgstr "產生 PGP/GPG 簽名"
 msgid "override target platform"
 msgstr "無視目標平台"
 
-#: build/rpmfc.c:102
+#: build/rpmfc.c:104
 #, fuzzy, c-format
 msgid "Couldn't create pipe for %s: %m\n"
 msgstr "無法開啟 %s：%s\n"
 
-#: build/rpmfc.c:117
+#: build/rpmfc.c:119
 #, fuzzy, c-format
 msgid "Couldn't chdir to %s: %s\n"
 msgstr "無法執行 %s: %s\n"
 
-#: build/rpmfc.c:128
+#: build/rpmfc.c:130
 #, fuzzy, c-format
 msgid "Couldn't exec %s: %s\n"
 msgstr "無法執行 %s: %s\n"
 
-#: build/rpmfc.c:133 lib/psm.c:742
+#: build/rpmfc.c:135 lib/psm.c:742
 #, fuzzy, c-format
 msgid "Couldn't fork %s: %s\n"
 msgstr "無法開啟 %s：%s\n"
 
-#: build/rpmfc.c:219
+#: build/rpmfc.c:221
 #, fuzzy, c-format
 msgid "%s failed\n"
 msgstr "%s 失敗：%s\n"
 
-#: build/rpmfc.c:223
+#: build/rpmfc.c:225
 #, fuzzy, c-format
 msgid "failed to write all data to %s\n"
 msgstr "無法寫入酬載到 %s: %s\n"
 
-#: build/rpmfc.c:1173
+#: build/rpmfc.c:1175
 #, c-format
 msgid "Conversion of %s to long integer failed.\n"
 msgstr ""
 
-#: build/rpmfc.c:1253
+#: build/rpmfc.c:1255
 #, fuzzy, c-format
 msgid "magic_open(0x%x) failed: %s\n"
 msgstr "開啟 %s 失敗：%s\n"
 
-#: build/rpmfc.c:1260
+#: build/rpmfc.c:1262
 #, fuzzy, c-format
 msgid "magic_load failed: %s\n"
 msgstr "%s 移除目錄 %s 失敗：%s\n"
 
-#: build/rpmfc.c:1302
+#: build/rpmfc.c:1304
 #, c-format
 msgid "Recognition of file \"%s\" failed: mode %06o %s\n"
 msgstr ""
 
-#: build/rpmfc.c:1500
+#: build/rpmfc.c:1502
 #, fuzzy, c-format
 msgid "Finding  %s: %s\n"
 msgstr "檔案 %s: %s\n"
 
-#: build/rpmfc.c:1505 build/rpmfc.c:1514
+#: build/rpmfc.c:1507 build/rpmfc.c:1516
 #, fuzzy, c-format
 msgid "Failed to find %s:\n"
 msgstr "讀取 %s 失敗: %s。\n"
 
-#: build/rpmfc.c:1596 build/rpmfc.c:1627
+#: build/rpmfc.c:1598 build/rpmfc.c:1629
 #, fuzzy
 msgid "Unable to get current dependency name.\n"
 msgstr "移除目錄時失敗 %s: %s\n"
 
-#: build/rpmfc.c:1602 build/rpmfc.c:1633
+#: build/rpmfc.c:1604 build/rpmfc.c:1635
 msgid "Unable to get current dependency epoch-version-release.\n"
 msgstr ""
 
-#: build/rpmfc.c:1660
+#: build/rpmfc.c:1662
 msgid "File count from file info doesn't match file in container.\n"
 msgstr ""
 
-#: build/rpmfc.c:1675
+#: build/rpmfc.c:1677
 msgid "Container not of string array data type.\n"
 msgstr ""
 
@@ -2377,7 +2377,7 @@ msgstr "%s 失敗的於檔案 %s: %s\n"
 msgid "%s failed: %s\n"
 msgstr "%s 失敗：%s\n"
 
-#: lib/psm.c:1537 lib/transaction.c:1087 lib/verify.c:479
+#: lib/psm.c:1537 lib/transaction.c:1291 lib/verify.c:479
 #, fuzzy, c-format
 msgid "Unable to change root directory: %m\n"
 msgstr "移除目錄時失敗 %s: %s\n"
@@ -2902,27 +2902,27 @@ msgstr "無法開啟 %s 以讀取：%s\n"
 msgid "Unknown format"
 msgstr "不明的標記"
 
-#: lib/rpmts.c:105
+#: lib/rpmts.c:86
 #, c-format
 msgid "cannot open Packages database in %s\n"
 msgstr "無法開啟套件資料庫 %s\n"
 
-#: lib/rpmts.c:190
+#: lib/rpmts.c:171
 #, c-format
 msgid "extra '(' in package label: %s\n"
 msgstr "額外的「(」存在於套件標籤中：%s\n"
 
-#: lib/rpmts.c:208
+#: lib/rpmts.c:189
 #, c-format
 msgid "missing '(' in package label: %s\n"
 msgstr "丟失的「(」存在於套件標籤中：%s\n"
 
-#: lib/rpmts.c:216
+#: lib/rpmts.c:197
 #, c-format
 msgid "missing ')' in package label: %s\n"
 msgstr "丟失的「)」存在於套件標籤中：%s\n"
 
-#: lib/rpmts.c:287
+#: lib/rpmts.c:268
 #, fuzzy, c-format
 msgid "%s: reading of public key failed.\n"
 msgstr "%s：公鑰讀入失敗。\n"
@@ -3319,7 +3319,7 @@ msgstr "無法開啟暫時檔案。\n"
 msgid "Unknown system error"
 msgstr "不明的系統：%s\n"
 
-#: python/rpmts-py.c:164
+#: python/rpmts-py.c:165
 #, c-format
 msgid "error: python callback %s failed, aborting!\n"
 msgstr ""

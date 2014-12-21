@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rpm 4.0.3\n"
 "Report-Msgid-Bugs-To: rpm-maint@lists.rpm.org\n"
-"POT-Creation-Date: 2009-12-07 12:45+0200\n"
+"POT-Creation-Date: 2010-01-08 10:36+0200\n"
 "PO-Revision-Date: 2001-07-12 13:25+0000\n"
 "Last-Translator: Richard Allen <ra@hp.is>\n"
 "Language-Team: is <kde-isl@mmedia.is>\n"
@@ -1351,80 +1351,80 @@ msgstr ""
 msgid "override target platform"
 msgstr ""
 
-#: build/rpmfc.c:102
+#: build/rpmfc.c:104
 #, fuzzy, c-format
 msgid "Couldn't create pipe for %s: %m\n"
 msgstr "Gat ekki búið til undirferli (fork) %s: %s\n"
 
-#: build/rpmfc.c:117
+#: build/rpmfc.c:119
 #, fuzzy, c-format
 msgid "Couldn't chdir to %s: %s\n"
 msgstr "Gat ekki keyrt %s: %s\n"
 
-#: build/rpmfc.c:128
+#: build/rpmfc.c:130
 #, c-format
 msgid "Couldn't exec %s: %s\n"
 msgstr "Gat ekki keyrt %s: %s\n"
 
-#: build/rpmfc.c:133 lib/psm.c:742
+#: build/rpmfc.c:135 lib/psm.c:742
 #, c-format
 msgid "Couldn't fork %s: %s\n"
 msgstr "Gat ekki búið til undirferli (fork) %s: %s\n"
 
-#: build/rpmfc.c:219
+#: build/rpmfc.c:221
 #, c-format
 msgid "%s failed\n"
 msgstr "%s brást\n"
 
-#: build/rpmfc.c:223
+#: build/rpmfc.c:225
 #, c-format
 msgid "failed to write all data to %s\n"
 msgstr "gat ekki ritað öll gögn í %s\n"
 
-#: build/rpmfc.c:1173
+#: build/rpmfc.c:1175
 #, c-format
 msgid "Conversion of %s to long integer failed.\n"
 msgstr ""
 
-#: build/rpmfc.c:1253
+#: build/rpmfc.c:1255
 #, fuzzy, c-format
 msgid "magic_open(0x%x) failed: %s\n"
 msgstr "%s brást\n"
 
-#: build/rpmfc.c:1260
+#: build/rpmfc.c:1262
 #, fuzzy, c-format
 msgid "magic_load failed: %s\n"
 msgstr "%s rmdir %s brást: %s\n"
 
-#: build/rpmfc.c:1302
+#: build/rpmfc.c:1304
 #, fuzzy, c-format
 msgid "Recognition of file \"%s\" failed: mode %06o %s\n"
 msgstr "%s rmdir %s brást: %s\n"
 
-#: build/rpmfc.c:1500
+#: build/rpmfc.c:1502
 #, fuzzy, c-format
 msgid "Finding  %s: %s\n"
 msgstr "Skrá %s: %s\n"
 
-#: build/rpmfc.c:1505 build/rpmfc.c:1514
+#: build/rpmfc.c:1507 build/rpmfc.c:1516
 #, c-format
 msgid "Failed to find %s:\n"
 msgstr "gat ekki fundið %s:\n"
 
-#: build/rpmfc.c:1596 build/rpmfc.c:1627
+#: build/rpmfc.c:1598 build/rpmfc.c:1629
 #, fuzzy
 msgid "Unable to get current dependency name.\n"
 msgstr "gat ekki búið til %s: %s\n"
 
-#: build/rpmfc.c:1602 build/rpmfc.c:1633
+#: build/rpmfc.c:1604 build/rpmfc.c:1635
 msgid "Unable to get current dependency epoch-version-release.\n"
 msgstr ""
 
-#: build/rpmfc.c:1660
+#: build/rpmfc.c:1662
 msgid "File count from file info doesn't match file in container.\n"
 msgstr ""
 
-#: build/rpmfc.c:1675
+#: build/rpmfc.c:1677
 msgid "Container not of string array data type.\n"
 msgstr ""
 
@@ -2387,7 +2387,7 @@ msgstr "gat ekki opnað %s: %s\n"
 msgid "%s failed: %s\n"
 msgstr "%s brást\n"
 
-#: lib/psm.c:1537 lib/transaction.c:1087 lib/verify.c:479
+#: lib/psm.c:1537 lib/transaction.c:1291 lib/verify.c:479
 #, fuzzy, c-format
 msgid "Unable to change root directory: %m\n"
 msgstr "gat ekki búið til %s: %s\n"
@@ -2910,27 +2910,27 @@ msgstr "Get ekki opnað %s til lesturs: %s.\n"
 msgid "Unknown format"
 msgstr "Óþekkt tegund táknmyndar: %s\n"
 
-#: lib/rpmts.c:105
+#: lib/rpmts.c:86
 #, c-format
 msgid "cannot open Packages database in %s\n"
 msgstr "get ekki opnað pakka gagnagrunn í %s\n"
 
-#: lib/rpmts.c:190
+#: lib/rpmts.c:171
 #, c-format
 msgid "extra '(' in package label: %s\n"
 msgstr ""
 
-#: lib/rpmts.c:208
+#: lib/rpmts.c:189
 #, fuzzy, c-format
 msgid "missing '(' in package label: %s\n"
 msgstr "vantar '(' í  %s %s\n"
 
-#: lib/rpmts.c:216
+#: lib/rpmts.c:197
 #, fuzzy, c-format
 msgid "missing ')' in package label: %s\n"
 msgstr "vantar '(' í  %s %s\n"
 
-#: lib/rpmts.c:287
+#: lib/rpmts.c:268
 #, fuzzy, c-format
 msgid "%s: reading of public key failed.\n"
 msgstr "%s: Fseek brást: %s\n"
@@ -3329,7 +3329,7 @@ msgstr "Get ekki opnað tempi skrá.\n"
 msgid "Unknown system error"
 msgstr "Óþekkt eða óvænt villa"
 
-#: python/rpmts-py.c:164
+#: python/rpmts-py.c:165
 #, c-format
 msgid "error: python callback %s failed, aborting!\n"
 msgstr ""

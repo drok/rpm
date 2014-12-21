@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rpm-4.4.90\n"
 "Report-Msgid-Bugs-To: rpm-maint@lists.rpm.org\n"
-"POT-Creation-Date: 2009-12-07 12:45+0200\n"
+"POT-Creation-Date: 2010-01-08 10:36+0200\n"
 "PO-Revision-Date: 2008-03-11 11:15+0200\n"
 "Last-Translator: Panu Matilainen <pmatilai@redhat.com>\n"
 "Language-Team: Finnish\n"
@@ -1361,79 +1361,79 @@ msgstr "generoi PGP/GPG-allekirjoitus"
 msgid "override target platform"
 msgstr "ohita kohdealusta"
 
-#: build/rpmfc.c:102
+#: build/rpmfc.c:104
 #, c-format
 msgid "Couldn't create pipe for %s: %m\n"
 msgstr "Ei voitu luoda putkea %s:lle: %m\n"
 
-#: build/rpmfc.c:117
+#: build/rpmfc.c:119
 #, c-format
 msgid "Couldn't chdir to %s: %s\n"
 msgstr "Siirtyminen hakemistoon %s ei onnistunut: %s\n"
 
-#: build/rpmfc.c:128
+#: build/rpmfc.c:130
 #, c-format
 msgid "Couldn't exec %s: %s\n"
 msgstr "Ei voitu suorittaa %s:ää: %s\n"
 
-#: build/rpmfc.c:133 lib/psm.c:742
+#: build/rpmfc.c:135 lib/psm.c:742
 #, c-format
 msgid "Couldn't fork %s: %s\n"
 msgstr "Ei voitu suorittaa %s:ää: %s\n"
 
-#: build/rpmfc.c:219
+#: build/rpmfc.c:221
 #, c-format
 msgid "%s failed\n"
 msgstr "%s epäonnistui\n"
 
-#: build/rpmfc.c:223
+#: build/rpmfc.c:225
 #, c-format
 msgid "failed to write all data to %s\n"
 msgstr "kaiken tiedon kirjoittaminen %s:ään ei onnistunut\n"
 
-#: build/rpmfc.c:1173
+#: build/rpmfc.c:1175
 #, c-format
 msgid "Conversion of %s to long integer failed.\n"
 msgstr ""
 
-#: build/rpmfc.c:1253
+#: build/rpmfc.c:1255
 #, c-format
 msgid "magic_open(0x%x) failed: %s\n"
 msgstr "magic_open(0x%x) epäonnistui: %s\n"
 
-#: build/rpmfc.c:1260
+#: build/rpmfc.c:1262
 #, c-format
 msgid "magic_load failed: %s\n"
 msgstr "magic_load epäonnistui: %s\n"
 
-#: build/rpmfc.c:1302
+#: build/rpmfc.c:1304
 #, c-format
 msgid "Recognition of file \"%s\" failed: mode %06o %s\n"
 msgstr "Tiedoston \"%s\" tunnistaminen epäonnistui: moodi %06o %s\n"
 
-#: build/rpmfc.c:1500
+#: build/rpmfc.c:1502
 #, c-format
 msgid "Finding  %s: %s\n"
 msgstr "Etsitään %s:ää: %s\n"
 
-#: build/rpmfc.c:1505 build/rpmfc.c:1514
+#: build/rpmfc.c:1507 build/rpmfc.c:1516
 #, c-format
 msgid "Failed to find %s:\n"
 msgstr "%s:ää ei löytynyt\n"
 
-#: build/rpmfc.c:1596 build/rpmfc.c:1627
+#: build/rpmfc.c:1598 build/rpmfc.c:1629
 msgid "Unable to get current dependency name.\n"
 msgstr ""
 
-#: build/rpmfc.c:1602 build/rpmfc.c:1633
+#: build/rpmfc.c:1604 build/rpmfc.c:1635
 msgid "Unable to get current dependency epoch-version-release.\n"
 msgstr ""
 
-#: build/rpmfc.c:1660
+#: build/rpmfc.c:1662
 msgid "File count from file info doesn't match file in container.\n"
 msgstr ""
 
-#: build/rpmfc.c:1675
+#: build/rpmfc.c:1677
 msgid "Container not of string array data type.\n"
 msgstr ""
 
@@ -2385,7 +2385,7 @@ msgstr "%s epäonnistui tiedostolle %s: %s\n"
 msgid "%s failed: %s\n"
 msgstr "%s epäonnistui: %s\n"
 
-#: lib/psm.c:1537 lib/transaction.c:1087 lib/verify.c:479
+#: lib/psm.c:1537 lib/transaction.c:1291 lib/verify.c:479
 #, c-format
 msgid "Unable to change root directory: %m\n"
 msgstr "Juurihakemiston vaihto ei onnistu: %m\n"
@@ -2905,27 +2905,27 @@ msgstr "En voi avata %s luettavaksi: %m.\n"
 msgid "Unknown format"
 msgstr "Tuntematon formaatti"
 
-#: lib/rpmts.c:105
+#: lib/rpmts.c:86
 #, c-format
 msgid "cannot open Packages database in %s\n"
 msgstr "Pakettitietokantaa %s ei voida avata\n"
 
-#: lib/rpmts.c:190
+#: lib/rpmts.c:171
 #, c-format
 msgid "extra '(' in package label: %s\n"
 msgstr ""
 
-#: lib/rpmts.c:208
+#: lib/rpmts.c:189
 #, c-format
 msgid "missing '(' in package label: %s\n"
 msgstr ""
 
-#: lib/rpmts.c:216
+#: lib/rpmts.c:197
 #, c-format
 msgid "missing ')' in package label: %s\n"
 msgstr ""
 
-#: lib/rpmts.c:287
+#: lib/rpmts.c:268
 #, c-format
 msgid "%s: reading of public key failed.\n"
 msgstr "%s: julkisen avaimen luku epäonnistui.\n"
@@ -3319,7 +3319,7 @@ msgstr ""
 msgid "Unknown system error"
 msgstr "Tuntematon järjestelmäverhe"
 
-#: python/rpmts-py.c:164
+#: python/rpmts-py.c:165
 #, c-format
 msgid "error: python callback %s failed, aborting!\n"
 msgstr ""
