@@ -419,8 +419,8 @@ static int doImport(rpmts ts, const char *fn, char *buf, ssize_t blen)
     int res = 0;
     int keyno = 1;
     char *start = strstr(buf, pgpmark);
-    
-    while (start) {
+
+    do {
 	uint8_t *pkt = NULL;
 	size_t pktlen = 0;
 	
@@ -438,7 +438,7 @@ static int doImport(rpmts ts, const char *fn, char *buf, ssize_t blen)
 	}
 	
 	/* See if there are more keys in the buffer */
-	if (start + marklen < buf + blen) {
+	if (start && start + marklen < buf + blen) {
 	    start = strstr(start + marklen, pgpmark);
 	} else {
 	    start = NULL;
@@ -446,7 +446,8 @@ static int doImport(rpmts ts, const char *fn, char *buf, ssize_t blen)
 
 	keyno++;
 	free(pkt);
-    }
+    } while (start != NULL);
+
     return res;
 }
 
