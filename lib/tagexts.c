@@ -461,12 +461,6 @@ static int filerequireTag(Header h, rpmtd td, headerGetFlags hgflags)
 }
 
 /* I18N look aside diversions */
-
-#if defined(ENABLE_NLS)
-extern int _nl_msg_cat_cntr;	/* XXX GNU gettext voodoo */
-#endif
-static const char * const language = "LANGUAGE";
-
 static const char * const _macro_i18ndomains = "%{?_i18ndomains}";
 
 /**
@@ -478,61 +472,27 @@ static const char * const _macro_i18ndomains = "%{?_i18ndomains}";
  */
 static int i18nTag(Header h, rpmTag tag, rpmtd td, headerGetFlags hgflags)
 {
-    char * dstring = rpmExpand(_macro_i18ndomains, NULL);
-    int rc;
+    int rc = headerGet(h, tag, td, HEADERGET_ALLOC);
+    if (rc) {
+	char *de, *dstring = rpmExpand(_macro_i18ndomains, NULL);
+	const char *domain;
 
-    td->type = RPM_STRING_TYPE;
-    td->data = NULL;
-    td->count = 0;
-
-    if (dstring && *dstring) {
-	char *domain, *de;
-	const char * langval;
-	char * msgkey;
-	const char * msgid;
-
-	rasprintf(&msgkey, "%s(%s)", headerGetString(h, RPMTAG_NAME), 
-		  rpmTagGetName(tag));
-
-	/* change to en_US for msgkey -> msgid resolution */
-	langval = getenv(language);
-	(void) setenv(language, "en_US", 1);
-#if defined(ENABLE_NLS)
-        ++_nl_msg_cat_cntr;
-#endif
-
-	msgid = NULL;
 	for (domain = dstring; domain != NULL; domain = de) {
+	    const char *msgid = td->data;
+	    const char *msg = NULL;
+
 	    de = strchr(domain, ':');
 	    if (de) *de++ = '\0';
-	    msgid = dgettext(domain, msgkey);
-	    if (msgid != msgkey) break;
+	    msg = dgettext(domain, td->data);
+	    if (msg != msgid) {
+		free(td->data);
+		td->data = xstrdup(msg);
+		break;
+	    }
 	}
-
-	/* restore previous environment for msgid -> msgstr resolution */
-	if (langval)
-	    (void) setenv(language, langval, 1);
-	else
-	    unsetenv(language);
-#if defined(ENABLE_NLS)
-        ++_nl_msg_cat_cntr;
-#endif
-
-	if (domain && msgid) {
-	    td->data = dgettext(domain, msgid);
-	    td->data = xstrdup(td->data); /* XXX xstrdup has side effects. */
-	    td->count = 1;
-	    td->flags = RPMTD_ALLOCED;
-	}
-	dstring = _free(dstring);
-	free(msgkey);
-	if (td->data)
-	    return 1;
+	free(dstring);
     }
 
-    dstring = _free(dstring);
-
-    rc = headerGet(h, tag, td, HEADERGET_ALLOC);
     return rc;
 }
 
