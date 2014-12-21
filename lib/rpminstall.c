@@ -81,6 +81,10 @@ static rpmVSFlags setvsFlags(struct rpmInstallArguments_s * ia)
     else
 	vsflags = rpmExpandNumeric("%{?_vsflags_install}");
 
+  // Ignore _RPMVSF_NOSIGNATURES flag from config files.
+  // Checking signatures can only be turned off by addidng --nosignature on the commandline
+	vsflags &= ~_RPMVSF_NOSIGNATURES;
+
     if (ia->qva_flags & VERIFY_DIGEST)
 	vsflags |= _RPMVSF_NODIGESTS;
     if (ia->qva_flags & VERIFY_SIGNATURE)

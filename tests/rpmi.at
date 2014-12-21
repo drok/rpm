@@ -20,7 +20,7 @@ AT_BANNER([RPM install tests])
 
 # ------------------------------
 # Check if rpm -U *.src.rpm works
-AT_SETUP([rpm -U *.src.rpm])
+AT_SETUP([rpm --nosignature -U *.src.rpm succeds for UNSIGNED])
 AT_KEYWORDS([install])
 AT_CHECK([
 rm -rf ${TOPDIR}
@@ -32,6 +32,26 @@ run rpm \
 [0],
 [ignore],
 [ignore])
+AT_CLEANUP
+
+# ------------------------------
+# Check if rpm -U *.src.rpm fails for unsigned rpms
+AT_SETUP([rpm -U *.src.rpm fails because UNSIGNED srpm])
+AT_KEYWORDS([install unsigned])
+AT_CHECK([
+rm -rf ${TOPDIR}
+
+tpkg="hello-1.0-1.src.rpm"
+cp "${RPMDATA}/SRPMS/${tpkg}" .
+
+run rpm \
+  -U "${tpkg}"
+],
+[1],
+[],
+[error: hello-1.0-1.src.rpm: Header SHA1 digest: OK (ce6c408c1a30f21214370092f7db0c8f9fe3da79) UNSIGNED
+error: hello-1.0-1.src.rpm cannot be installed (insecure)
+])
 AT_CLEANUP
 
 # ------------------------------

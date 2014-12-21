@@ -69,6 +69,33 @@ AT_CLEANUP
 
 
 # ------------------------------
+# install a noarch package into a local rpmdb without --relocate and --nodeps
+# * Should fail if package is unsigned and --nosignature is not given
+AT_SETUP([rpm -i *.noarch.rpm])
+AT_KEYWORDS([rpmdb install unsigned])
+
+AT_CHECK([
+RPMDB_CLEAR
+RPMDB_INIT
+
+tpkg="foo-1.0-1.noarch.rpm"
+cp "${RPMDATA}/RPMS/${tpkg}" "${RPMTEST}"
+
+runroot rpm \
+  -i \
+  "${tpkg}"
+],
+[1],
+[],
+[error: foo-1.0-1.noarch.rpm: Header SHA1 digest: OK (44788e6bb24ecee08ea90307d69e86193f4508b3) UNSIGNED
+error: foo-1.0-1.noarch.rpm cannot be installed (insecure)
+])
+
+AT_CLEANUP
+
+
+#
+# ------------------------------
 # install a package into a local rpmdb
 # * Shall only work with relocation
 # * Use --ignorearch because we don't know the arch
@@ -128,7 +155,7 @@ run rpmbuild --quiet -bb \
 	--define "filedata same_stuff" \
           ${RPMDATA}/SPECS/conflicttest.spec
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/conflictstatus-1.0-1.noarch.rpm
 runroot rpm -qls conflictstatus
 ],
 [0],
