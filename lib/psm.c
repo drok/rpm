@@ -455,23 +455,25 @@ static rpmRC runLuaScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t argv,
 #ifdef WITH_LUA
     char *sname = NULL;
     int rootFd = -1;
+    int curFd = -1;
     int xx;
     rpmlua lua = NULL; /* Global state. */
     rpmluav var;
     mode_t oldmask;
+    const char *rootDir = rpmtsRootDir(ts);
+    int chroot_done = 0;
 
     rasprintf(&sname, "%s(%s)", tag2sln(stag), rpmteNEVRA(psm->te));
 
     rpmlog(RPMLOG_DEBUG, "%s: %s running <lua> scriptlet.\n",
 	   psm->stepName, sname);
     if (!rpmtsChrootDone(ts)) {
-	const char *rootDir = rpmtsRootDir(ts);
-	xx = chdir("/");
-	rootFd = open(".", O_RDONLY, 0);
-	if (rootFd >= 0) {
-	    if (rootDir != NULL && !rstreq(rootDir, "/") && *rootDir == '/')
-		xx = chroot(rootDir);
-	    xx = rpmtsSetChrootDone(ts, 1);
+	if (rootDir != NULL && !rstreq(rootDir, "/") && *rootDir == '/') {
+	    rootFd = open("/", O_RDONLY, 0);
+	    if (rootFd != -1 && fchdir(rootFd) == 0 && chroot(rootDir) == 0) {
+		xx = rpmtsSetChrootDone(ts, 1);
+		chroot_done = 1;
+	    }
 	}
     }
 
@@ -497,25 +499,36 @@ static rpmRC runLuaScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t argv,
     var = rpmluavFree(var);
     rpmluaPop(lua);
 
-    /* Lua scripts can change our umask, save and restore */
+    /* Lua scripts can change our umask and cwd, save and restore */
     oldmask = umask(0);
     umask(oldmask);
+    curFd = open(".", O_RDONLY, 0);
 
-    if (rpmluaRunScript(lua, script, sname) == 0) {
-	rc = RPMRC_OK;
-    } else if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT && stag != RPMTAG_PRETRANS)) {
-	warn_only = 1;
+    if (curFd != -1 && chdir("/") == 0) {
+
+	if (rpmluaRunScript(lua, script, sname) == 0) {
+	    rc = RPMRC_OK;
+	}
+
+	xx = fchdir(curFd);
+	xx = close(curFd);
+    }
+
+    if (rc != RPMRC_OK) {
+	if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN &&
+	     stag != RPMTAG_VERIFYSCRIPT && stag != RPMTAG_PRETRANS)) {
+	    warn_only = 1;
+	}
     }
     umask(oldmask);
 
     rpmluaDelVar(lua, "arg");
 
-    if (rootFd >= 0) {
-	const char *rootDir = rpmtsRootDir(ts);
+    /* return from chroot only if we really changed into one locally */
+    if (chroot_done) {
 	xx = fchdir(rootFd);
 	xx = close(rootFd);
-	if (rootDir != NULL && !rstreq(rootDir, "/") && *rootDir == '/')
-	    xx = chroot(".");
+	xx = chroot(".");
 	xx = rpmtsSetChrootDone(ts, 0);
     }
     free(sname);
