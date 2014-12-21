@@ -280,8 +280,7 @@ static int rpmVerifyScript(QVA_t qva, rpmts ts, Header h, FD_t scriptFd)
 
     /* create psm to run the script */
     psm = rpmpsmNew(ts, te);
-    rpmpsmScriptStage(psm, RPMTAG_VERIFYSCRIPT, RPMTAG_VERIFYSCRIPTPROG);
-    rc = rpmpsmStage(psm, PSM_SCRIPT);
+    rc = rpmpsmScriptStage(psm, RPMTAG_VERIFYSCRIPT, RPMTAG_VERIFYSCRIPTPROG);
     psm = rpmpsmFree(psm);
 
     if (scriptFd != NULL)
@@ -291,7 +290,7 @@ static int rpmVerifyScript(QVA_t qva, rpmts ts, Header h, FD_t scriptFd)
     rpmteClose(te, ts, 0);
     rpmtsEmpty(ts);
 
-    return rc;
+    return (rc != RPMRC_OK);
 }
 
 /**
