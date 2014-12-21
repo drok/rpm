@@ -464,6 +464,9 @@ static int pgpPrtSubType(const uint8_t *h, size_t hlen, pgpSigType sigtype,
 
     while (hlen > 0) {
 	i = pgpLen(p, &plen);
+	if (i + plen > hlen)
+	    break;
+
 	p += i;
 	hlen -= i;
 
@@ -546,7 +549,7 @@ static int pgpPrtSubType(const uint8_t *h, size_t hlen, pgpSigType sigtype,
 	p += plen;
 	hlen -= plen;
     }
-    return 0;
+    return (hlen != 0); /* non-zero hlen is an error */
 }
 
 static const char * const pgpSigRSA[] = {
@@ -705,7 +708,8 @@ fprintf(stderr, "   hash[%zu] -- %s\n", plen, pgpHexStr(p, plen));
 	    _digp->hashlen = sizeof(*v) + plen;
 	    _digp->hash = memcpy(xmalloc(_digp->hashlen), v, _digp->hashlen);
 	}
-	(void) pgpPrtSubType(p, plen, v->sigtype, _digp);
+	if (pgpPrtSubType(p, plen, v->sigtype, _digp))
+	    return 1;
 	p += plen;
 
 	plen = pgpGrab(p,2);
@@ -716,7 +720,8 @@ fprintf(stderr, "   hash[%zu] -- %s\n", plen, pgpHexStr(p, plen));
 
 if (_debug && _print)
 fprintf(stderr, " unhash[%zu] -- %s\n", plen, pgpHexStr(p, plen));
-	(void) pgpPrtSubType(p, plen, v->sigtype, _digp);
+	if (pgpPrtSubType(p, plen, v->sigtype, _digp))
+	    return 1;
 	p += plen;
 
 	plen = pgpGrab(p,2);
