@@ -2695,6 +2695,7 @@ int rpmdbAdd(rpmdb db, int iid, Header h,
     dbiIndex dbi;
     int dbix;
     union _dbswap mi_offset;
+    void *hdrBlob = NULL;
     unsigned int hdrNum = 0;
     int ret = 0;
     int rc;
@@ -2713,6 +2714,13 @@ int rpmdbAdd(rpmdb db, int iid, Header h,
 	rpm_tid_t tid = iid;
 	if (!headerIsEntry(h, RPMTAG_INSTALLTID)) 
 	    headerPutUint32(h, RPMTAG_INSTALLTID, &tid, 1);
+    }
+
+    hdrBlob = headerUnload(h);
+    if (hdrBlob == NULL) {
+	rpmlog(RPMLOG_ERR, _("failure converting header to db presentation\n"));
+	ret = 1;
+	goto exit;
     }
 
     (void) blockSignals(&signalMask);
@@ -2816,7 +2824,7 @@ int rpmdbAdd(rpmdb db, int iid, Header h,
     		    _DBSWAP(mi_offset);
 		key.data = (void *) &mi_offset;
 		key.size = sizeof(mi_offset.ui);
-		data.data = headerUnload(h);
+		data.data = hdrBlob;
 		data.size = headerSizeof(h, HEADER_MAGIC_NO);
 
 		/* Check header digest/signature on blob export. */
@@ -2836,7 +2844,7 @@ int rpmdbAdd(rpmdb db, int iid, Header h,
 		    xx = dbiPut(dbi, dbcursor, &key, &data, DB_KEYLAST);
 		    xx = dbiSync(dbi, 0);
 		}
-		data.data = _free(data.data);
+		data.data = NULL;
 		data.size = 0;
 		xx = dbiCclose(dbi, dbcursor, DB_WRITECURSOR);
 		dbcursor = NULL;
@@ -2968,6 +2976,7 @@ cont:
     }
 
 exit:
+    free(hdrBlob);
     (void) unblockSignals(&signalMask);
 
     return ret;
