@@ -145,11 +145,12 @@ static Header rpmgiReadHeader(rpmgi gi, const char * path)
 	    break;
 	case RPMRC_NOTTRUSTED:
 	case RPMRC_NOKEY:
+	case RPMRC_UNSIGNED:
 	case RPMRC_OK:
 	    break;
 	}
     }
-
+//  fprintf(stdout, _(" ----------- in %s:%zu rc=%u\n"), __FILE__, __LINE__, 0);
     return h;
 }
 

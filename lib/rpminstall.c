@@ -81,6 +81,10 @@ static rpmVSFlags setvsFlags(struct rpmInstallArguments_s * ia)
     else
 	vsflags = rpmExpandNumeric("%{?_vsflags_install}");
 
+  // Ignore _RPMVSF_NOSIGNATURES flag from config files.
+  // Checking signatures can only be turned off by addidng --nosignature on the commandline
+	vsflags &= ~_RPMVSF_NOSIGNATURES;
+
     if (ia->qva_flags & VERIFY_DIGEST)
 	vsflags |= _RPMVSF_NODIGESTS;
     if (ia->qva_flags & VERIFY_SIGNATURE)
@@ -344,14 +348,17 @@ static int tryReadHeader(rpmts ts, struct rpmEIU * eiu, rpmVSFlags vsflags)
    fd = NULL;
    
    /* Honor --nomanifest */
-   if (eiu->rpmrc == RPMRC_NOTFOUND && (giFlags & RPMGI_NOMANIFEST))
+   if(eiu->rpmrc == RPMRC_FAIL || (eiu->rpmrc == RPMRC_NOTFOUND  && (giFlags & RPMGI_NOMANIFEST))) {
        eiu->rpmrc = RPMRC_FAIL;
-
-   if(eiu->rpmrc == RPMRC_FAIL) {
        rpmlog(RPMLOG_ERR, _("%s cannot be installed\n"), *eiu->fnp);
        eiu->numFailed++; *eiu->fnp = NULL;
    }
 
+   /* Honor --nosignature */
+   if((eiu->rpmrc == RPMRC_UNSIGNED || eiu->rpmrc == RPMRC_NOKEY || eiu->rpmrc == RPMRC_NOTTRUSTED) && !(vsflags & _RPMVSF_NOSIGNATURES)) {
+       rpmlog(RPMLOG_ERR, _("%s cannot be installed (insecure)\n"), *eiu->fnp);
+       eiu->numFailed++; *eiu->fnp = NULL;
+   }
    return RPMRC_OK;
 }
 
@@ -506,7 +513,8 @@ restart:
 	rpmlog(RPMLOG_DEBUG, "============== %s\n", *eiu->fnp);
 	(void) urlPath(*eiu->fnp, &fileName);
 
-	if (tryReadHeader(ts, eiu, vsflags) == RPMRC_FAIL)
+	rc=tryReadHeader(ts, eiu, vsflags);
+	if (rc != RPMRC_OK && !(rc == RPMRC_UNSIGNED && vsflags & (RPMVSF_NODSAHEADER | RPMVSF_NORSAHEADER)) )
 	    continue;
 
 	if (eiu->rpmrc == RPMRC_NOTFOUND) {
@@ -586,6 +594,9 @@ restart:
 	eiu->numRPMS++;
     }
 
+	// All the signature messages have been output during file verification above. Don't repeat them
+	// during the transaction
+	rpmtsSetVSFlags(ts, rpmtsVSFlags(ts) | RPMVSF_SUPPRESSSECURITYMSG);
     rpmlog(RPMLOG_DEBUG, "found %d source and %d binary packages\n",
 		eiu->numSRPMS, eiu->numRPMS);
 

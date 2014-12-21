@@ -23,6 +23,7 @@ AT_SETUP([rpm --qf -p *.i386.rpm])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   -q --qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" \
   -p "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -113,6 +114,7 @@ tpkg="hello-1.0-1.ppc64.rpm"
 cp "${RPMDATA}/RPMS/$tpkg" "${RPMTEST}"
 
 runroot rpm \
+  --nosignature \
   --noscripts --nodeps --ignorearch --relocate=/usr="${abs_builddir}"/testing/check \
   -i "${tpkg}"
 ],
@@ -148,6 +150,7 @@ AT_SETUP([integer array query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{filemodes}\n]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -164,6 +167,7 @@ AT_SETUP([formatted filesbypkg query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%-10{=NAME} %{FILENAMES}\n]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -180,6 +184,7 @@ AT_SETUP([hex formatted integer array extension query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%5{longfilesizes:hex}\n]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -196,6 +201,7 @@ AT_SETUP([base64 extension query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{pkgid:base64}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -210,6 +216,7 @@ AT_SETUP([integer array perms format query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{filemodes:perms}\n]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -226,6 +233,7 @@ AT_SETUP([string array query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{basenames} ]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -239,6 +247,7 @@ AT_SETUP([empty string array query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{basenames}]]" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -252,6 +261,7 @@ AT_SETUP([empty string array extension array format])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{filenames}]]" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -265,6 +275,7 @@ AT_SETUP([empty string array extension query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{filenames}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -278,6 +289,7 @@ AT_SETUP([different sizes arrays query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="[[%{basenames} %{changelogname}]]" \
   -qp "${abs_srcdir}"/data/RPMS/hello-1.0-1.i386.rpm
 ],
@@ -292,6 +304,7 @@ AT_SETUP([non-existent string tag])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{vendor}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -305,6 +318,7 @@ AT_SETUP([non-existent integer tag query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{installcolor}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -318,6 +332,7 @@ AT_SETUP([conditional queryformat])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%|name?{%{name}}:{no}| %|installtime?{%{installtime}}:{(not installed)}|" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -331,6 +346,7 @@ AT_SETUP([invalid tag query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{notag}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],
@@ -345,6 +361,7 @@ AT_SETUP([invalid data for format query])
 AT_KEYWORDS([query])
 AT_CHECK([
 run rpm \
+  --nosignature \
   --queryformat="%{name:depflags}" \
   -qp "${abs_srcdir}"/data/RPMS/foo-1.0-1.noarch.rpm
 ],

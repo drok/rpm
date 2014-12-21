@@ -18,8 +18,8 @@ for v in "1.0" "2.0"; do
           ${RPMDATA}/SPECS/configtest.spec
 done
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
 ],
 [0],
 )
@@ -41,9 +41,9 @@ for v in "1.0" "2.0"; do
           ${RPMDATA}/SPECS/configtest.spec
 done
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
 echo "otherstuff" > "${RPMTEST}"/etc/my.conf
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
 ],
 [0],
 )
@@ -65,8 +65,8 @@ for v in "1.0" "2.0"; do
           ${RPMDATA}/SPECS/configtest.spec
 done
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
 ],
 [0],
 )
@@ -88,9 +88,9 @@ for v in "1.0" "2.0"; do
           ${RPMDATA}/SPECS/configtest.spec
 done
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-1.0-1.noarch.rpm
 echo "otherstuff" > "${RPMTEST}"/etc/my.conf
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/configtest-2.0-1.noarch.rpm
 ],
 [0],
 [ignore],

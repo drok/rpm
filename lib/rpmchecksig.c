@@ -628,7 +628,7 @@ static void formatResult(rpmSigTag sigtag, rpmRC sigres, const char *result,
 	rasprintf(&msg, "    %s", result);
     } else { 
 	/* Check for missing / untrusted keys in result. */
-	const char *signame = sigtagname(sigtag, (sigres != RPMRC_OK));
+	const char *signame = sigtagname(sigtag, (sigres != RPMRC_OK && sigres != RPMRC_UNSIGNED));
 	
 	if (havekey && (sigres == RPMRC_NOKEY || sigres == RPMRC_NOTTRUSTED)) {
 	    const char *tempKey = strstr(result, "ey ID");
@@ -786,7 +786,7 @@ static int rpmpkgVerifySigs(rpmKeyring keyring, rpmQueryFlags flags,
 		     &buf);
 	free(result);
 
-	if (rc != RPMRC_OK) {
+	if (rc != RPMRC_OK && rc != RPMRC_UNSIGNED) {
 	    failed = 1;
 	}
 

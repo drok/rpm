@@ -89,7 +89,8 @@ typedef	enum rpmRC_e {
     RPMRC_NOTFOUND	= 1,	/*!< Generic not found code. */
     RPMRC_FAIL		= 2,	/*!< Generic failure code. */
     RPMRC_NOTTRUSTED	= 3,	/*!< Signature is OK, but key is not trusted. */
-    RPMRC_NOKEY		= 4	/*!< Public key is unavailable. */
+    RPMRC_NOKEY		= 4,	/*!< Public key is unavailable. */
+    RPMRC_UNSIGNED		= 5,	/*!< Signature not found. */
 } rpmRC;
 
 #ifdef __cplusplus

@@ -143,42 +143,6 @@ Header headerRegenSigHeader(const Header h, int noArchiveSize)
     return sigh;
 }
 
-/**
- * Remember current key id.
- * @param dig		OpenPGP packet containter
- * @return		0 if new keyid, otherwise 1
- */
-static int stashKeyid(pgpDig dig)
-{
-    pgpDigParams sigp = dig ? &dig->signature : NULL;
-    unsigned int keyid;
-    int i;
-
-    if (dig == NULL || sigp == NULL)
-	return 0;
-
-    keyid = pgpGrab(sigp->signid+4, 4);
-    if (keyid == 0)
-	return 0;
-
-    if (keyids != NULL)
-    for (i = 0; i < nkeyids; i++) {
-	if (keyid == keyids[i])
-	    return 1;
-    }
-
-    if (nkeyids < nkeyids_max) {
-	nkeyids++;
-	keyids = xrealloc(keyids, nkeyids * sizeof(*keyids));
-    }
-    if (keyids)		/* XXX can't happen */
-	keyids[nextkeyid] = keyid;
-    nextkeyid++;
-    nextkeyid %= nkeyids_max;
-
-    return 0;
-}
-
 /* Parse the parameters from the OpenPGP packets that will be needed. */
 static rpmRC parsePGP(rpmtd sigtd, const char *type, pgpDig dig)
 {
@@ -351,6 +315,10 @@ static rpmRC headerVerify(rpmKeyring keyring, rpmVSFlags vsflags,
 exit:
     /* Return determined RPMRC_OK/RPMRC_FAIL conditions. */
     if (rc != RPMRC_NOTFOUND) {
+	if (rc == RPMRC_OK) {
+	    rc = RPMRC_UNSIGNED;
+//	    fprintf(stdout, _(" ----------- in %s:%zu rc=%u UNSIGNED\n"), __FILE__, __LINE__, rc);
+	}
 	if (msg) 
 	    *msg = buf;
 	else
@@ -508,20 +476,28 @@ static rpmRC rpmpkgReadHeader(rpmKeyring keyring, rpmVSFlags vsflags,
 
     /* Sanity check header tags */
     rc = headerVerify(keyring, vsflags, ei, uc, msg);
-    if (rc != RPMRC_OK)
+//	fprintf(stdout, _(" ----------- in %s:%zu rc=%u flags=%08x\n"), __FILE__, __LINE__, rc, vsflags);
+//    if (rc == RPMRC_UNSIGNED && (vsflags & _RPMVSF_NOSIGNATURES))
+//	rc = RPMRC_OK;
+//    if ( rc == RPMRC_UNSIGNED ) rc = RPMRC_OK;
+
+    if ( rc != RPMRC_OK && rc != RPMRC_UNSIGNED )
 	goto exit;
 
     /* OK, blob looks sane, load the header. */
     h = headerLoad(ei);
+//	fprintf(stdout, _(" ----------- in %s:%zu rc=%u flags=%08x\n"), __FILE__, __LINE__, rc, vsflags);
     if (h == NULL) {
+//	fprintf(stdout, _(" ----------- in %s:%zu rc=%u flags=%08x\n"), __FILE__, __LINE__, rc, vsflags);
 	rasprintf(&buf, _("hdr load: BAD\n"));
 	rc = RPMRC_FAIL;
         goto exit;
     }
     ei = NULL;	/* XXX will be freed with header */
     
+//	fprintf(stdout, _(" ----------- in %s:%zu rc=%u flags=%08x\n"), __FILE__, __LINE__, rc, vsflags);
 exit:
-    if (hdrp && h && rc == RPMRC_OK)
+    if (hdrp && h && (rc == RPMRC_OK || rc == RPMRC_UNSIGNED))
 	*hdrp = headerLink(h);
     ei = _free(ei);
     h = headerFree(h);
@@ -634,7 +610,7 @@ static rpmRC rpmpkgRead(rpmKeyring keyring, rpmVSFlags vsflags,
 
     rc = rpmpkgReadHeader(keyring, vsflags, fd, &h, &msg);
 
-    if (rc != RPMRC_OK || h == NULL) {
+    if ((rc != RPMRC_OK && rc != RPMRC_UNSIGNED) || h == NULL) {
 	rpmlog(RPMLOG_ERR, _("%s: headerRead failed: %s"), fn,
 		(msg && *msg ? msg : "\n"));
 	msg = _free(msg);
@@ -712,8 +688,15 @@ static rpmRC rpmpkgRead(rpmKeyring keyring, rpmVSFlags vsflags,
 	break;
     case RPMRC_NOTTRUSTED:	/* Signature is OK, but key is not trusted. */
     case RPMRC_NOKEY:		/* Public key is unavailable. */
+    case RPMRC_UNSIGNED:		/* There is no signature. */
 	/* XXX Print NOKEY/NOTTRUSTED warning only once. */
-    {	int lvl = (stashKeyid(dig) ? RPMLOG_DEBUG : RPMLOG_WARNING);
+    {	int lvl = (vsflags & (RPMVSF_SUPPRESSSECURITYMSG | (_RPMVSF_NOSIGNATURES))) ? RPMLOG_DEBUG : RPMLOG_ERR;
+	// The key stashing lookup is bad:
+	// If multiple packages are signed by the same key, the warning is printed for only
+	// one suspect package.
+	// This is dangerous because it may lead one to add --nosignature to the installation
+	// command line, without realizing the full list of packages that are allowed with
+	// untrusted signatures.
 	rpmlog(lvl, "%s: %s", fn, msg);
     }	break;
     case RPMRC_NOTFOUND:	/* Signature is unknown type. */

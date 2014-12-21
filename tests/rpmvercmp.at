@@ -15,8 +15,8 @@ for v in "1.0" "2.0"; do
           ${RPMDATA}/SPECS/versiontest.spec
 done
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
 ],
 [0],
 [ignore],
@@ -28,8 +28,8 @@ AT_SETUP([rpm -U upgrade to older])
 AT_CHECK([
 RPMDB_CLEAR
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
 ],
 [2],
 [ignore],
@@ -41,8 +41,8 @@ AT_SETUP([rpm -U --oldpackage downgrade])
 AT_CHECK([
 RPMDB_CLEAR
 
-runroot rpm -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
-runroot rpm -U --oldpackage "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
+runroot rpm --nosignature -U "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
+runroot rpm --nosignature -U --oldpackage "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
 ],
 [0],
 [ignore],
@@ -56,6 +56,7 @@ AT_CHECK([
 RPMDB_CLEAR
 
 runroot rpm -U \
+  --nosignature \
   "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm \
   "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
 ],
@@ -71,6 +72,7 @@ AT_CHECK([
 RPMDB_CLEAR
 
 runroot rpm -i \
+  --nosignature \
   "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm \
   "${TOPDIR}"/RPMS/noarch/versiontest-2.0-1.noarch.rpm
 ],
@@ -87,6 +89,7 @@ RPMDB_CLEAR
 
 # TODO test just one was installed, this only emits warnings
 runroot rpm -ivh \
+  --nosignature \
   "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm \
   "${TOPDIR}"/RPMS/noarch/versiontest-1.0-1.noarch.rpm
 ],

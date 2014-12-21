@@ -83,7 +83,7 @@ check_DATA = atconfig atlocal $(TESTSUITE)
 check_DATA += testing$(bindir)/rpmbuild
 
 check-local: $(check_DATA)
-	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS) ||:
+	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS)
 
 installcheck-local: $(check_DATA)
 	$(SHELL) '$(TESTSUITE)' AUTOTEST_PATH='$(bindir)' \
