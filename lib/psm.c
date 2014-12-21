@@ -503,7 +503,7 @@ static rpmRC runLuaScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t argv,
 
     if (rpmluaRunScript(lua, script, sname) == 0) {
 	rc = RPMRC_OK;
-    } else if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT)) {
+    } else if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT && stag != RPMTAG_PRETRANS)) {
 	warn_only = 1;
     }
     umask(oldmask);
@@ -760,7 +760,7 @@ static rpmRC runScript(rpmpsm psm, Header h, rpmTag stag, ARGV_t * argvp,
                    sname, WTERMSIG(psm->sq.status));
 	} else {
 	    /* filter out "regular" error exits from non-pre scriptlets */
-	    if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT)) {
+	    if ((stag != RPMTAG_PREIN && stag != RPMTAG_PREUN && stag != RPMTAG_VERIFYSCRIPT && stag != RPMTAG_PRETRANS)) {
 		warn_only = 1;
 	    }
 	    rpmlog(warn_only ? RPMLOG_WARNING : RPMLOG_ERR, 

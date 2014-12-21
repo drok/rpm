@@ -1152,7 +1152,6 @@ static int runTransScripts(rpmts ts, rpmTag stag)
     rpmte p;
     rpmpsm psm;
     rpmTag progtag = RPMTAG_NOT_FOUND;
-    int xx;
 
     if (stag == RPMTAG_PRETRANS) {
 	progtag = RPMTAG_PRETRANSPROG;
@@ -1170,7 +1169,8 @@ static int runTransScripts(rpmts ts, rpmTag stag)
 
     	if (rpmteOpen(p, ts, 0)) {
 	    psm = rpmpsmNew(ts, p);
-	    xx = rpmpsmScriptStage(psm, stag, progtag);
+	    if (rpmpsmScriptStage(psm, stag, progtag))
+		rpmteMarkFailed(p, ts);
 	    psm = rpmpsmFree(psm);
 	    rpmteClose(p, ts, 0);
 	}
