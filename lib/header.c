@@ -358,6 +358,8 @@ static int regionSwab(indexEntry entry, int il, int dl,
 		const unsigned char * dataEnd,
 		int regionid)
 {
+    if (regionid > 0)
+	return -1;
     for (; il > 0; il--, pe++) {
 	struct indexEntry_s ie;
 	rpmTagType type;
@@ -827,6 +829,8 @@ Header headerLoad(void * uh)
 	    if (off) {
 		size_t nb = REGION_TAG_COUNT;
 		int32_t stei[nb];
+		if (dataStart + off + nb > dataEnd)
+		    goto errxit;
 		/* XXX Hmm, why the copy? */
 		memcpy(&stei, dataStart + off, nb);
 		rdl = -ntohl(stei[2]);	/* negative offset */
