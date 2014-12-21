@@ -645,8 +645,6 @@ static int checkPassPhrase(const char * passPhrase, const rpmSigTag sigTag)
 	xx = close(STDIN_FILENO);
 	xx = close(STDOUT_FILENO);
 	xx = close(passPhrasePipe[1]);
-	if (! rpmIsVerbose())
-	    xx = close(STDERR_FILENO);
 	if ((fdno = open("/dev/null", O_RDONLY)) != STDIN_FILENO) {
 	    xx = dup2(fdno, STDIN_FILENO);
 	    xx = close(fdno);
